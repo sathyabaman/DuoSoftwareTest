@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">DuoProject</string>
+    <string name="password">Enter password</string>
+    <string name="email">Enter email address</string>
+    <string name="login">Login</string>
+    <string name="default_username">kasun.g@duosoftware.com</string>
+    <string name="default_password">ADTest123!</string>
+</resources>
