@@ -5,4 +5,6 @@
     <string name="login">Login</string>
     <string name="default_username">kasun.g@duosoftware.com</string>
     <string name="default_password">ADTest123!</string>
+    <string name="refresh">Refresh Data</string>
+    <string name="profile">Profile</string>
 </resources>

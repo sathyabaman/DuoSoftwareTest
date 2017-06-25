@@ -23,8 +23,11 @@
         <activity
             android:name=".Login"
             android:label="Login" />
-        <activity android:name=".TicketList"
-            android:label="Ticket List"></activity>
+        <activity
+            android:name=".TicketList"
+            android:label="Ticket List" />
+        <activity android:name=".ProfileDetails"
+            android:label="Profile Details"></activity>
     </application>
 
 </manifest>

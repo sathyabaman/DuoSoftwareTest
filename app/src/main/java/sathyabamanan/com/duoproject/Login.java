@@ -38,12 +38,12 @@ public class Login extends AppCompatActivity {
     }
 
     public void sendLloginRequest(View v){
-        if(isNetworkAvailable()){
+        if(new Utility().isNetworkAvailable(context)){
             showprogressDialog("Requesting Login token. Please wait.");
             login_email = email.getText().toString();
             login_password =  password.getText().toString();
-            String getLoginUrl = getRequestBody();
-            new RequestExternalResouce(context, new Utility().getLoginUrl(), getLoginUrl, new RequestExternalResouce.OnTaskDoneListener() {
+            String getLoginData = getRequestBody();
+            new RequestExternalResouce(context, new Utility().getLoginUrl(), getLoginData, false, "POST", new RequestExternalResouce.OnTaskDoneListener() {
                 @Override
                 public void onTaskDone(String responseData) {
                     try{pDialog.dismiss();} catch (Exception e){e.printStackTrace();}
@@ -100,13 +100,6 @@ public class Login extends AppCompatActivity {
         }catch (Exception e){e.printStackTrace();}
     }
 
-
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
 
     private void showErrorMessage(String title, String data){
         new AlertDialog.Builder(this)

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.Charset;
 
 /**
  * Created by baman on 6/25/17.
@@ -20,12 +21,17 @@ public class RequestExternalResouce extends AsyncTask<String, Void, String> {
     private OnTaskDoneListener onTaskDoneListener;
     private String urlStr = "";
     private String  requestBody = "";
+    private Boolean bearer = true;
+    private String requestType="";
 
-    public RequestExternalResouce(Context context, String url, String body, OnTaskDoneListener onTaskDoneListener) {
+    public RequestExternalResouce(Context context, String url, String body, Boolean bearer, String requestType,  OnTaskDoneListener onTaskDoneListener) {
         this.mContext = context;
         this.urlStr = url;
         this.requestBody= body;
         this.onTaskDoneListener = onTaskDoneListener;
+        this.bearer = bearer;
+        this.requestType = requestType;
+
     }
 
     @Override
@@ -33,20 +39,36 @@ public class RequestExternalResouce extends AsyncTask<String, Void, String> {
         try {
             URL mUrl = new URL(urlStr);
             HttpURLConnection httpConnection = (HttpURLConnection) mUrl.openConnection();
-            httpConnection.setRequestMethod("POST");
+
+            if (requestType.equals("POST")){
+                httpConnection.setRequestMethod("POST");
+            }  else {
+                httpConnection.setRequestMethod("GET");
+            }
+
             httpConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+
+            if (bearer){
+                httpConnection.setRequestProperty("Authorization", "bearer "+ new Utility().getDataFromSharedPreferences("token", mContext));
+            }
+
             httpConnection.setUseCaches(false);
+
+            if (requestType.equals("POST")) { httpConnection.setDoOutput(true); }
             httpConnection.setAllowUserInteraction(false);
             httpConnection.setConnectTimeout(1000000);
             httpConnection.setReadTimeout(1000000);
-            httpConnection.setDoOutput(true);
 
-            DataOutputStream localDataOutputStream = new DataOutputStream(httpConnection.getOutputStream());
-            localDataOutputStream.writeBytes(requestBody.toString());
-            localDataOutputStream.flush();
-            localDataOutputStream.close();
+            if (requestType.equals("POST")) {
+                DataOutputStream localDataOutputStream = new DataOutputStream(httpConnection.getOutputStream());
+                localDataOutputStream.writeBytes(requestBody.toString());
+                localDataOutputStream.flush();
+                localDataOutputStream.close();
+            }
+
 
             int responseCode = httpConnection.getResponseCode();
+            System.out.println("Connection response code : "+ responseCode);
             httpConnection.connect();
 
             BufferedReader br = new BufferedReader(new InputStreamReader(httpConnection.getInputStream()));
