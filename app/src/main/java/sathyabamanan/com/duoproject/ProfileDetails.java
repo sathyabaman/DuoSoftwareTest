@@ -6,6 +6,13 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import sathyabamanan.com.duoproject.comman.RequestExternalResouce;
 import sathyabamanan.com.duoproject.comman.Utility;
@@ -14,11 +21,24 @@ public class ProfileDetails extends AppCompatActivity {
     Context context;
     ProgressDialog pDialog;
 
+    ImageView avator;
+    TextView fullname;
+    TextView dateofbirth;
+    TextView gender;
+    TextView useremail;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_details);
         context = getApplicationContext();
+
+        avator = (ImageView) findViewById(R.id.PD_Image);
+        fullname = (TextView) findViewById(R.id.PD_fullnam);
+        dateofbirth = (TextView) findViewById(R.id.PD_dateofbirth);
+        gender = (TextView) findViewById(R.id.PD_gender);
+        useremail = (TextView) findViewById(R.id.PD_usr);
 
         getProfileDetails();
     }
@@ -32,6 +52,7 @@ public class ProfileDetails extends AppCompatActivity {
                 public void onTaskDone(String responseData) {
                     try{pDialog.dismiss();} catch (Exception e){e.printStackTrace();}
                     System.out.println("Success :  getProfileDetails"+ responseData);
+                    DisplayProfileDetails(responseData);
                 }
 
                 @Override
@@ -44,7 +65,25 @@ public class ProfileDetails extends AppCompatActivity {
             showErrorMessage("No Connectivity!", "Please check your Internet connection.");
     }
 
+    public void DisplayProfileDetails(String responseData){
+        try {
+            JSONObject response  = new JSONObject(responseData);
+            Boolean TicketStatus = (Boolean) response.get("IsSuccess");
+            if (TicketStatus){
+                Picasso.with(context).load(response.getJSONObject("Result").getString("avatar").toString()).resize(142, 145).into(avator);
+                fullname.setText(response.getJSONObject("Result").getString("firstname").toString() + " " +response.getJSONObject("Result").getString("lastname").toString());
+                gender.setText("Gender : "+ response.getJSONObject("Result").getString("gender").toString());
+                useremail.setText("User Email : "+ response.getJSONObject("Result").getString("username").toString());
+                String[] parts = response.getJSONObject("Result").getString("birthday").toString().split("T");
+                dateofbirth.setText("Date Of Birth : "+ parts[0]);
+            } else {
+                showErrorMessage("No profile data!", "Profile data not available.");
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
+    }
 
 
 
