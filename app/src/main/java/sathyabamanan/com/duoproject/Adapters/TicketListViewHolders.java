@@ -1,11 +1,14 @@
 package sathyabamanan.com.duoproject.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
 import sathyabamanan.com.duoproject.R;
+import sathyabamanan.com.duoproject.TicketDetails;
+import sathyabamanan.com.duoproject.TicketList;
 
 /**
  * Created by baman on 6/25/17.
@@ -37,14 +40,18 @@ public class TicketListViewHolders extends RecyclerView.ViewHolder implements Vi
 
     @Override
     public void onClick(View view) {
-      //  String forcastcode = forcastId.getText().toString();
+        String TicketId = ticketid.getText().toString();
+        String ticketOriginalId= "";
 
+        for(int g=0; g< TicketList.TicketListArray.size(); g++){
+            if (TicketId.equals(String.valueOf(TicketList.TicketListArray.get(g).tid))){
+                ticketOriginalId = TicketList.TicketListArray.get(g)._id.toString();
+            }
+        }
 
-//        Intent intent = new Intent(view.getContext(), WeatherDetail.class);
-//        intent.putExtra("code", String.valueOf(fmodel.ForecastCode));
-//
-//        view.getContext().startActivity(intent);
-
-
+        Intent intent = new Intent(view.getContext(), TicketDetails.class);
+        intent.putExtra("TicketId", String.valueOf(ticketOriginalId));
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 }

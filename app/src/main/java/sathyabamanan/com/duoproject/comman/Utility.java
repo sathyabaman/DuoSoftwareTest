@@ -28,6 +28,10 @@ public class Utility {
         return "http://liteticket.app1.veery.cloud/DVP/API/1.0.0.0/MyTickets/10/1?status=new";
     }
 
+    public String getTicketDetailsUrl(){
+        return "http://liteticket.app.veery.cloud/DVP/API/1.0.0.0/Ticket/";
+    }
+
     public void addDataToSharedPreferences(String key, String value, Context ctx){
         SharedPreferences.Editor editor = ctx.getSharedPreferences("Duo_Main_Shared_File", ctx.MODE_PRIVATE).edit();
         editor.putString(key, value);

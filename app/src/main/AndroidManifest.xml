@@ -26,8 +26,11 @@
         <activity
             android:name=".TicketList"
             android:label="Ticket List" />
-        <activity android:name=".ProfileDetails"
-            android:label="Profile Details"></activity>
+        <activity
+            android:name=".ProfileDetails"
+            android:label="Profile Details" />
+        <activity android:name=".TicketDetails"
+            android:label="Ticket Details"></activity>
     </application>
 
 </manifest>
