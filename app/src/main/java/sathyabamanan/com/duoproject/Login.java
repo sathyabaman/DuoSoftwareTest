@@ -3,6 +3,7 @@ package sathyabamanan.com.duoproject;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AlertDialog;
@@ -21,10 +22,8 @@ import sathyabamanan.com.duoproject.comman.Utility;
 public class Login extends AppCompatActivity {
     TextView email;
     TextView password;
-
     String login_email;
     String login_password;
-
     Context context;
     ProgressDialog pDialog;
 
@@ -36,9 +35,7 @@ public class Login extends AppCompatActivity {
 
         email = (TextView) findViewById(R.id.L_email);
         password = (TextView) findViewById(R.id.L_password);
-
     }
-
 
     public void sendLloginRequest(View v){
         if(isNetworkAvailable()){
@@ -51,6 +48,7 @@ public class Login extends AppCompatActivity {
                 public void onTaskDone(String responseData) {
                     try{pDialog.dismiss();} catch (Exception e){e.printStackTrace();}
                     System.out.println("Success :  in activity"+ responseData);
+                    saveresponseData(responseData);
                 }
 
                 @Override
@@ -64,6 +62,17 @@ public class Login extends AppCompatActivity {
 
     }
 
+
+    public void saveresponseData(String responseData){
+        try {
+            JSONObject response = new JSONObject(responseData);
+            String token = response.getString("token");
+            new Utility().addDataToSharedPreferences("token", token, context);
+            Login.this.startActivity(new Intent(Login.this, TicketList.class));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
     public String getRequestBody(){
         JSONObject requestBody = new JSONObject();
