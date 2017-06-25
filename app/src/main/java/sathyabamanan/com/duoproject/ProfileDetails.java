@@ -32,7 +32,6 @@ public class ProfileDetails extends AppCompatActivity {
                 public void onTaskDone(String responseData) {
                     try{pDialog.dismiss();} catch (Exception e){e.printStackTrace();}
                     System.out.println("Success :  getProfileDetails"+ responseData);
-
                 }
 
                 @Override

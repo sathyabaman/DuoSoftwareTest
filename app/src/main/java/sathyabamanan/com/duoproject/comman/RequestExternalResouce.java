@@ -80,7 +80,6 @@ public class RequestExternalResouce extends AsyncTask<String, Void, String> {
             br.close();
 
 
-
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 return sb.toString();
             }
