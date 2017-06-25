@@ -43,6 +43,7 @@ public class TicketList extends AppCompatActivity {
         context = getApplicationContext();
         TlistrecyclerView = (RecyclerView) findViewById(R.id.TL_recyclerview);
         getTicketList();
+        updateRecyclerView();
     }
 
 
@@ -55,7 +56,7 @@ public class TicketList extends AppCompatActivity {
                     try{pDialog.dismiss();} catch (Exception e){e.printStackTrace();}
                     System.out.println("Success :  getProfileDetails"+ responseData);
                     addTicklist(responseData);
-                    updateRecyclerView();
+                    TicketAdapter.notifyDataSetChanged();
                 }
 
                 @Override
@@ -146,7 +147,9 @@ public class TicketList extends AppCompatActivity {
         int menu_id = item.getItemId();
         switch (menu_id){
             case R.id.menu_refresh:
-
+                TicketListArray.clear();
+                TicketAdapter.notifyDataSetChanged();
+                getTicketList();
                 break;
             case R.id.menu_profile:
                 TicketList.this.startActivity(new Intent(TicketList.this, ProfileDetails.class));
